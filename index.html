@@ -1,119 +1,110 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
+  <meta charset="utf-8">
+  <title>Brightness on a LED using PWM</title>
+  <style>
+    body {
+      background-image: url('https://images.pexels.com/photos/7130493/pexels-photo-7130493.jpeg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: black; /* Ensure all text is black */
+      font-family: Arial, sans-serif;
+    }
 
-<head>
+    table {
+      background-color: white;
+      color: black;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
 
-<body>
+    table, th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
 
+    th {
+      background-color: #f0f0f0;
+    }
 
-<style>
-body {
-  background-image: url('https://images.pexels.com/photos/7130493/pexels-photo-7130493.jpeg');
-}
-</style>
-
-
-
-<table border="1">
-
-<h1>Brightness on a LED using PWN</h1>
-
-
-
-
-
-<h2>The items needed</h2>
-
-
-<ol>
-
-
-<li>6 wires </li>
-    <li>1 Arduino Board</li>
-    <li>1 Analog Rotation Sensor</li>
-    <li>wire to connect the Board to the PC </li>
-    <li>1 LED</li>
-   
-</ol>
-
-<img src="https://i.ibb.co/VcxkNYYD/Arduino-uno-image.png
-" alt="Wiring Diagram" width="900" height="500">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<p><a href="/">Wiring Chart</a></p>
-
-
-
-<tr>
-    <td>    </td>
-<td>Input</td>
-     <td>Process</td>
-     <td>Output</td>
-
-
-
-     
-</tr>
-<tr>
-    <td>Components</td>
-  <td>potentiometer</td>
-<td>Arduino</td>
-     <td>LED</td>
- 
-     
-     
-     
-     
-     
-     
-     
-     
-   
-
-
-   
-    <html>
-<head>
-<style>
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th, td {
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: pink;
-}
-</style>
+    .code-window {
+      background-color: #f5f5f5;
+      color: black;
+      padding: 16px;
+      border-radius: 8px;
+      font-family: monospace;
+      overflow-x: auto;
+      max-width: 600px;
+      margin: 20px auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+  </style>
 </head>
 <body>
 
+  <h1>Brightness on a LED using PWM</h1>
 
+  <table>
+    <tr>
+      <th></th>
+      <th>Input</th>
+      <th>Process</th>
+      <th>Output</th>
+    </tr>
+    <tr>
+      <td>Components</td>
+      <td>Potentiometer</td>
+      <td>Arduino</td>
+      <td>LED</td>
+    </tr>
+  </table>
 
-<img src="https://i.ibb.co/Q7qVJzjc/20250512-122024.jpg
-" alt="Wiring Diagram" width="400" height="200">
+  <h2>The items needed</h2>
+  <ol>
+    <li>6 wires</li>
+    <li>1 Arduino Board</li>
+    <li>1 Analog Rotation Sensor</li>
+    <li>Wire to connect the Board to the PC</li>
+    <li>1 LED</li>
+  </ol>
 
+  <img src="https://i.ibb.co/VcxkNYYD/Arduino-uno-image.png" alt="Wiring Diagram" width="900" height="500" style="border-radius: 100px;">
+  <br>
+  <a href="https://i.ibb.co/8DMN5Lcv/circuit.png">Here's a link to the Circuit Diagram.</a>
+  <br>
+  <img src="https://i.ibb.co/Q7qVJzjc/20250512-122024.jpg" alt="Wiring Diagram" width="400" height="200" style="border-radius: 50px;">
 
-   
-   
-    </html>
-    </head>
+  <h2>The code needed</h2>
+  <div class="code-window">
+    <pre><code>
+const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
+const int analogOutPin = 9; // Analog output pin that the LED is attached to
+
+int sensorValue = 0;        // value read from the pot
+int outputValue = 0;        // value output to the PWM (analog out)
+
+void setup() {
+  Serial.begin(9600);
+  Serial.print("Testing analogWrite Function for PWMs \n");
+  analogWrite(5, 127);
+}
+
+void loop() {
+  sensorValue = analogRead(analogInPin);
+  outputValue = map(sensorValue, 0, 1023, 0, 222);
+  analogWrite(analogOutPin, outputValue);
+
+  Serial.print("sensor = ");
+  Serial.print(sensorValue);
+  Serial.print("\t output = ");
+  Serial.println(outputValue);
+
+  analogWrite(5, outputValue);
+  delay(20);
+}
+    </code></pre>
+  </div>
+
+</body>
+</html>
