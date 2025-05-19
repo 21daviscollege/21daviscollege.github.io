@@ -185,7 +185,7 @@
           The output of the potentiometer is read by the Arduino to adjust the brightness of the LED connected to PWM-capable pin 3. 
           The LED's brightness is controlled using Pulse Width Modulation (PWM), which changes the amount of time the LED is on during each cycle. 
           The potentiometer is wired such that its middle pin is connected to the Arduino's A0 pin, one of the side pins is connected to the 5V rail, and the other side pin is connected to the GND rail. 
-          The LED is connected in series with a suitable current-limiting resistor to pin 9, ensuring proper brightness control.
+          The LED is connected to the 3.3 Volt pin, Ground pin and digital pin 3, ensuring proper brightness control. The AND switch is a visual representation of the Digital Pin 3 Controlling the pulse width and the 3.3V providing constant power, as without both of them the LED wont light
         </p>
       </div>
     </div>
@@ -227,10 +227,17 @@ void loop() {
     <h2>Helpful Tips</h2>
     <ul>
       <li>Make sure the LED is connected in the correct direction (long leg to positive).</li>
-      <li>Pin 3 on the Arduino supports PWM — not all pins do!</li>
-      <li>Use the Serial Monitor to see real-time values from your potentiometer.</li>
+      <li>We used Pin 3 on the Arduino which supports PWM not all pins do, so make sure to use one that does!</li>
+      <li>Use the Serial Monitor to see real-time values from the potentiometer.</li>
+    
+    <li>The Black wire is always connected to ground(GND on a Arduino)</li>
+      
+    <li>Use Pre existing code to make sure you make no errors.</li>
+    
+    <li>Do not tangle the wires when putting it together.</li>
     </ul>
   </div>
+  
 
   <!-- JavaScript for Modal with Animation -->
   <script>
@@ -260,6 +267,10 @@ void loop() {
       }
     }
   </script>
+  
+  
+
+  
 
 </body>
 </html>
