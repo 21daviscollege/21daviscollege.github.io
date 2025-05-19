@@ -8,8 +8,20 @@
       background-image: url('https://images.pexels.com/photos/7130493/pexels-photo-7130493.jpeg');
       background-repeat: no-repeat;
       background-attachment: fixed;
-      color: black; /* Ensure all text is black */
+      background-size: cover;
+      margin: 0;
+      padding: 0;
       font-family: Arial, sans-serif;
+      color: black;
+    }
+
+    .content-wrapper {
+      background: rgba(255, 255, 255, 0.85);
+      padding: 20px;
+      margin: 20px auto;
+      max-width: 900px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
     }
 
     table {
@@ -17,6 +29,14 @@
       color: black;
       border-collapse: collapse;
       margin-top: 20px;
+      width: 100%;
+    }
+
+    caption {
+      caption-side: top;
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 8px;
     }
 
     table, th, td {
@@ -35,76 +55,211 @@
       border-radius: 8px;
       font-family: monospace;
       overflow-x: auto;
-      max-width: 600px;
-      margin: 20px auto;
+      max-width: 100%;
+      margin: 20px 0;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    img {
+      display: block;
+      margin: 20px auto;
+      max-width: 100%;
+    }
+
+    a {
+      display: block;
+      margin: 10px auto;
+      text-align: center;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #333;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    /* Modal styling */
+    #circuitModal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7);
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    #circuitModalContent {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+      position: relative;
+    }
+
+    #closeModalBtn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Modal content paragraph */
+    #circuitParagraph {
+      font-size: 1em;
+      margin-top: 20px;
+      text-align: left;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
 <body>
 
-  <h1>Brightness on a LED using PWM</h1>
+  <div class="content-wrapper">
+    <h1>Brightness on a LED using PWM</h1>
 
-  <table>
-    <tr>
-      <th></th>
-      <th>Input</th>
-      <th>Process</th>
-      <th>Output</th>
-    </tr>
-    <tr>
-      <td>Components</td>
-      <td>Potentiometer</td>
-      <td>Arduino</td>
-      <td>LED</td>
-    </tr>
-  </table>
+    <h2>The Process Overview</h2>
+    <table>
+      <caption>Flow of Input to Output</caption>
+      <tr>
+        <th></th>
+        <th>Input</th>
+        <th>Process</th>
+        <th>Output</th>
+      </tr>
+      <tr>
+        <td>Components</td>
+        <td>Potentiometer</td>
+        <td>Arduino</td>
+        <td>LED</td>
+      </tr>
+    </table>
 
-  <h2>The items needed</h2>
-  <ol>
-    <li>6 wires</li>
-    <li>1 Arduino Board</li>
-    <li>1 Analog Rotation Sensor</li>
-    <li>Wire to connect the Board to the PC</li>
-    <li>1 LED</li>
-  </ol>
+    <h2>The Items Needed</h2>
+    <ol>
+      <li>6 wires</li>
+      <li>1 Arduino Board</li>
+      <li>1 Analog Rotation Sensor (Potentiometer)</li>
+      <li>1 LED</li>
+      <li>USB cable to connect Arduino to PC</li>
+    </ol>
 
-  <img src="https://i.ibb.co/VcxkNYYD/Arduino-uno-image.png" alt="Wiring Diagram" width="900" height="500" style="border-radius: 100px;">
-  <br>
-  <a href="https://i.ibb.co/8DMN5Lcv/circuit.png">Here's a link to the Circuit Diagram.</a>
-  <br>
-  <img src="https://i.ibb.co/Q7qVJzjc/20250512-122024.jpg" alt="Wiring Diagram" width="400" height="200" style="border-radius: 50px;">
+    <h2>Wiring Setup</h2>
+    <img src="https://i.ibb.co/VcxkNYYD/Arduino-uno-image.png" alt="Arduino Uno wiring diagram with potentiometer and LED" style="border-radius: 12px;">
 
-  <h2>The code needed</h2>
-  <div class="code-window">
-    <pre><code>
-const int analogInPin = A0;  // Analog input pin that the potentiometer is attached to
-const int analogOutPin = 9; // Analog output pin that the LED is attached to
+    <!-- Circuit Diagram Button -->
+    <button id="openModalBtn">Show Circuit Diagram</button>
 
-int sensorValue = 0;        // value read from the pot
-int outputValue = 0;        // value output to the PWM (analog out)
+    <!-- Modal -->
+    <div id="circuitModal">
+      <div id="circuitModalContent">
+        <span id="closeModalBtn">&times;</span>
+        <h2>Circuit Diagram</h2>
+        <img src="https://i.ibb.co/8DMN5Lcv/circuit.png" alt="Circuit Diagram" style="max-width:100%; height:auto; border-radius:12px;">
+        
+        <!-- Paragraph inside Modal (Hidden by default) -->
+        <p id="circuitParagraph">
+          The wiring setup consists of connecting the potentiometer, an input device, to the analog input pin (A0) of the Arduino. 
+          The output of the potentiometer is read by the Arduino to adjust the brightness of the LED connected to PWM-capable pin 3. 
+          The LED's brightness is controlled using Pulse Width Modulation (PWM), which changes the amount of time the LED is on during each cycle. 
+          The potentiometer is wired such that its middle pin is connected to the Arduino's A0 pin, one of the side pins is connected to the 5V rail, and the other side pin is connected to the GND rail. 
+          The LED is connected in series with a suitable current-limiting resistor to pin 9, ensuring proper brightness control.
+        </p>
+      </div>
+    </div>
+
+    <img src="https://i.ibb.co/Q7qVJzjc/20250512-122024.jpg" alt="Actual photo of wired Arduino and components" style="border-radius: 12px;">
+
+    <h2>How PWM Works</h2>
+    <p>
+      Pulse Width Modulation (PWM) is a technique used to simulate analog voltage using digital means. By rapidly switching the LED on and off at varying intervals, we control its brightness. A higher duty cycle (on-time) means a brighter LED.
+    </p>
+
+    <h2>The Arduino Code</h2>
+    <div class="code-window">
+      <pre><code>
+const int analogInPin = A0;  // Analog input pin for the potentiometer
+const int analogOutPin = 3;  // PWM output pin for the LED
 
 void setup() {
   Serial.begin(9600);
-  Serial.print("Testing analogWrite Function for PWMs \n");
-  analogWrite(5, 127);
+  Serial.println("Testing analogWrite Function for PWM");
 }
 
 void loop() {
-  sensorValue = analogRead(analogInPin);
-  outputValue = map(sensorValue, 0, 1023, 0, 222);
-  analogWrite(analogOutPin, outputValue);
+  int sensorValue = analogRead(analogInPin);  // Read potentiometer
+  int outputValue = map(sensorValue, 0, 1023, 0, 255);  // Map to PWM range
 
-  Serial.print("sensor = ");
+  analogWrite(analogOutPin, outputValue);  // Set LED brightness
+
+  Serial.print("Sensor = ");
   Serial.print(sensorValue);
-  Serial.print("\t output = ");
+  Serial.print("\t Output = ");
   Serial.println(outputValue);
 
-  analogWrite(5, outputValue);
-  delay(20);
+  delay(20);  // Short delay for smoother output
 }
-    </code></pre>
+      </code></pre>
+    </div>
+
+    <h2>Helpful Tips</h2>
+    <ul>
+      <li>Make sure the LED is connected in the correct direction (long leg to positive).</li>
+      <li>Pin 3 on the Arduino supports PWM — not all pins do!</li>
+      <li>Use the Serial Monitor to see real-time values from your potentiometer.</li>
+    </ul>
   </div>
+
+  <!-- JavaScript for Modal with Animation -->
+  <script>
+    const modal = document.getElementById("circuitModal");
+    const openBtn = document.getElementById("openModalBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+
+    openBtn.onclick = function() {
+      modal.style.display = "block";
+      setTimeout(() => {
+        modal.style.opacity = "1";
+        modal.style.transform = "scale(1)";
+      }, 10); // small delay for transition effect
+    }
+
+    closeBtn.onclick = function() {
+      modal.style.opacity = "0";
+      modal.style.transform = "scale(0.9)";
+      setTimeout(() => {
+        modal.style.display = "none";
+      }, 300); // Matches the transition time
+    }
+
+    window.onclick = function(event) {
+      if (event.target === modal) {
+        closeBtn.click();
+      }
+    }
+  </script>
 
 </body>
 </html>
